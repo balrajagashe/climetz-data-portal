@@ -1,18 +1,24 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Header() {
+  const pathname = usePathname();
   const [email,setEmail]=useState<string>('');
+
   useEffect(()=>{
-    const e = localStorage.getItem('climetz_email')||'';
-    setEmail(e);
+    setEmail(localStorage.getItem('climetz_email') || '');
   },[]);
+
+  // Don’t show header at all on login page
+  if (pathname === '/login') return null;
+
   return (
     <header className="container" style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:16}}>
       <div className="row">
-        <Image src="/climetz-logo.png" alt="Climetz" width={36} height={36}/>
+        <Image src="/climetzlogo.png" alt="Climetz" width={36} height={36}/>
         <strong>Climetz Data Portal</strong>
       </div>
       <nav className="row" style={{gap:16}}>
