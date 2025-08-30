@@ -10,8 +10,8 @@ if (!cached) cached = (global as any)._mongoose = { conn: null, promise: null };
 export async function dbConnect() {
   if (cached.conn) return cached.conn;
   if (!cached.promise) {
-    // IMPORTANT: no dbName override here so it uses the same DB as Admin via your URI
-    cached.promise = mongoose.connect(MONGODB_URI).then((m) => m);
+    // Force shared DB name used by Admin
+    cached.promise = mongoose.connect(MONGODB_URI, { dbName: 'climetz' }).then((m) => m);
   }
   cached.conn = await cached.promise;
   return cached.conn;

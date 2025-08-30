@@ -4,7 +4,7 @@ import { dbConnect } from '@/lib/db';
 import { User } from '@/lib/models';
 import bcrypt from 'bcryptjs';
 
-// Set DISABLE_SEED=true in Replit Secrets after you’ve created your test users
+// Set DISABLE_SEED=true after creating test users
 const DISABLE = process.env.DISABLE_SEED === 'true';
 
 export async function POST(req: NextRequest) {
@@ -12,19 +12,19 @@ export async function POST(req: NextRequest) {
 
   await dbConnect();
   const body = await req.json().catch(() => ({}));
-  const email = body.email || process.env.SEED_EMAIL || 'demo@climetz.in';
+  const email = String(body.email || process.env.SEED_EMAIL || 'demo@climetz.in').toLowerCase().trim();
   const passwordPlain = body.password || process.env.SEED_PASSWORD || 'climetz123';
   const role = (body.role || process.env.SEED_ROLE || 'admin') as 'user'|'admin'|'superadmin';
 
-  const password = await bcrypt.hash(passwordPlain, 10);
+  const passwordHash = await bcrypt.hash(passwordPlain, 10);
 
   const update = {
     email,
     name: 'Climetz Demo',
     role,
     isActive: true,
-    // IMPORTANT: align with Admin: store bcrypt hash in "password"
-    password
+    // IMPORTANT: align with Admin portal -> store bcrypt hash in "passwordHash"
+    passwordHash
   };
 
   const user = await User.findOneAndUpdate({ email }, update, { upsert: true, new: true }).lean();
