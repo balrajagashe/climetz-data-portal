@@ -15,6 +15,9 @@ export default function Page() {
   return (
     <Guard>
       <h2>Sensors</h2>
+      <div className="row" style={{justifyContent:'flex-end', marginBottom:12}}>
+        <Link className="btn" href={`/energy/overview?locationId=${data?.devices?.[0]?.locationId || ''}`}>Energy Dashboard</Link>
+      </div>
       <div className="grid grid-3">
         {(data?.sensors || []).map((s:any)=>(
           <Card key={s._id} title={`${s.type} ${s.depth ? `(${s.depth}cm)` : ''}`} subtitle={s.unit || 'Sensor'}>

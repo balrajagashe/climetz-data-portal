@@ -24,6 +24,7 @@ export default function Header() {
       <nav className="row" style={{gap:16}}>
         <Link href="/locations">Locations</Link>
         <Link href="/reports">Reports</Link>
+        <Link href="/energy/overview">Energy</Link>   {/* NEW */}
         <Link href="/profile" className="badge">{email || 'Profile'}</Link>
       </nav>
     </header>
